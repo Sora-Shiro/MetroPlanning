@@ -1,0 +1,80 @@
+apply plugin: 'com.android.application'
+
+//ButterKnife
+apply plugin: 'com.jakewharton.butterknife'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.3"
+    defaultConfig {
+        applicationId "com.sorashiro.metroplanning"
+        minSdkVersion 15
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            //编译生成so库的名字，注意不要lib，和.so加进来,而且要和上面loadLibrary里面的参数一致
+            moduleName "jni_core_data"
+            //编译支持的平台
+            abiFilters "armeabi", "armeabi-v7a"
+        }
+        // 配置cmake build 参数
+        externalNativeBuild {
+            cmake {
+                arguments "-DANDROID_TOOLCHAIN=clang"
+                abiFilters "armeabi-v7a", "armeabi","x86"
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    // cmake构建的配置文件
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    testCompile 'junit:junit:4.12'
+
+    //ButterKnife
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
+    //ConstraintLayout
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    //https://github.com/akexorcist/Android-RoundCornerProgressBar
+    compile 'com.akexorcist:RoundCornerProgressBar:2.0.3'
+
+    //RxJava2
+    compile 'io.reactivex.rxjava2:rxjava:2.0.9'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'org.reactivestreams:reactive-streams:1.0.0'
+
+    //Android View Animations
+    compile 'com.daimajia.easing:library:2.0@aar'
+    compile 'com.daimajia.androidanimations:library:2.2@aar'
+
+    //RecycleView
+    compile 'com.android.support:recyclerview-v7:24.2.1'
+
+    //CardView
+    compile 'com.android.support:cardview-v7:24.2.1'  
+
+    //Android LayoutManager for RecyclerView to support Carousel view style
+    compile 'com.azoft.carousellayoutmanager:carousel:1.2.1'
+}

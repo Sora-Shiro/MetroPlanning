@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Metro Planning</string>
+    <string name="square">square</string>
+    <string name="start">Start</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="time_out">Time Out</string>
+    <string name="game_over">Game Over</string>
+    <string name="finish_level">Finish Level</string>
+    <string name="ok">OK</string>
+    <string name="confirm">Confirm</string>
+    <string name="metro_n_planning">METRO\nPLANNING</string>
+</resources>

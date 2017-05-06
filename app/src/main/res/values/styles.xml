@@ -1,0 +1,59 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <!--状态栏颜色-->
+        <item name="colorPrimaryDark">@color/grey</item>
+        <!--Toolbar颜色-->
+        <item name="colorPrimary">@color/blue_primary_dark</item>
+        <!--返回键样式-->
+        <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
+        <!-- AppCompatEditText默认状态状态设置底线颜色 -->
+        <item name="colorControlNormal">@color/white_icons</item>
+        <!-- AppCompatEditText选择的底线颜色 -->
+        <item name="colorControlActivated">@color/blue_primary</item>
+    </style>
+
+    <style name="AppPinkTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!--状态栏颜色-->
+        <item name="colorPrimaryDark">@color/grey</item>
+        <!--Toolbar颜色-->
+        <item name="colorPrimary">@color/blue_primary_dark</item>
+        <!--返回键样式-->
+        <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
+        <!-- AppCompatEditText默认状态状态设置底线颜色 -->
+        <item name="colorControlNormal">@color/white_icons</item>
+        <!-- AppCompatEditText选择的底线颜色 -->
+        <item name="colorControlActivated">@color/blue_primary</item>
+    </style>
+
+    <style name="AppTheme.DrawerArrowToggle" parent="Base.Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@android:color/white</item>
+    </style>
+
+    <style name="block" parent="AppTheme">
+        <item name="android:textSize">@dimen/block_text_size</item>
+        <item name="android:layout_margin">@dimen/block_margin</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white_text</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="progressBar" parent="AppTheme">
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="rcBackgroundColor">@color/progress_blue_bg</item>
+        <item name="rcBackgroundPadding">4dp</item>
+        <item name="rcIconBackgroundColor">@color/progress_blue_icon_bg</item>
+        <item name="rcIconPadding">4dp</item>
+        <item name="rcIconSize">0dp</item>
+        <item name="rcProgressColor">@color/progress_blue_first</item>
+        <item name="rcRadius">8dp</item>
+        <item name="rcReverse">false</item>
+        <item name="rcSecondaryProgress">0</item>
+        <item name="rcSecondaryProgressColor">@color/progress_blue_second</item>
+    </style>
+
+</resources>

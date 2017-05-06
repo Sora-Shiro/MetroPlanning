@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="app_background">#e3f2fd</color>
+    <color name="md_thumb_back_blue">#BBDEFB</color>
+    <color name="md_thumb_blue">#2196F3</color>
+    <color name="blue_primary">#2196F3</color>
+    <color name="blue_primary_dark">#1976D2</color>
+    <color name="blue_primary_light">#BBDEFB</color>
+    <color name="blue_primary_darker">#FF01579B</color>
+    <color name="blue_accent">#03A9F4</color>
+    <color name="black_primary_text">#212121</color>
+    <color name="black_secondary_text">#757575</color>
+    <color name="grey_secondary_text">#616161</color>
+    <color name="white_icons">#FFFFFF</color>
+    <color name="white_text">#e6ffffff</color>
+    <color name="black_divider">#BDBDBD</color>
+    <color name="grey">#BDBDBD</color>
+    <color name="yellow_error">#DDAA00</color>
+    <color name="btn_divider">#bdbdbd</color>
+
+    <color name="block_universal">#ffffff</color>
+    <color name="block_black">#ff3c3c3c</color>
+    <color name="block_black_transparent">#dc3c3c3c</color>
+    <color name="block_blue">#ff2196f3</color>
+    <color name="block_blue_transparent">#dc2196f3</color>
+    <color name="block_green">#ff4caf50</color>
+    <color name="block_green_transparent">#dc4caf50</color>
+    <color name="block_orange">#ffffb74d</color>
+    <color name="block_orange_transparent">#dcffb74d</color>
+    <color name="block_purple">#ffab47bc</color>
+    <color name="block_purple_transparent">#dcab47bc</color>
+
+    <color name="progress_blue_bg">#81d4fa</color>
+    <color name="progress_blue_first">#4fc3f7</color>
+    <color name="progress_blue_second">#2196f3</color>
+    <color name="progress_blue_icon_bg">#42a5f5</color>
+
+    <color name="game_over_blue_grey">#37474f</color>
+
+    <color name="main_activity_blue_grey_900">#263238</color>
+    <color name="main_activity_blue_grey_800">#37474f</color>
+    <color name="main_activity_text">#212121</color>
+</resources>

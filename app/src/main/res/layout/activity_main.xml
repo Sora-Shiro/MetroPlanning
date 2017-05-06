@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/activity_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+    android:padding="@dimen/main_activity_root_padding"
+    tools:context="com.sorashiro.metroplanning.GameActivity">
+
+    <Button
+        android:id="@+id/btn_setting"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="@dimen/main_activity_corner_btn"
+        android:layout_height="@dimen/main_activity_corner_btn"
+        android:background="@drawable/setting"
+        />
+
+    <Button
+        android:id="@+id/btn_help"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="@dimen/main_activity_corner_btn"
+        android:layout_height="@dimen/main_activity_corner_btn"
+        android:background="@drawable/help"
+        />
+
+    <Button
+        android:id="@+id/btn_list"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="@dimen/main_activity_corner_btn"
+        android:layout_height="@dimen/main_activity_corner_btn"
+        android:background="@drawable/list"
+        />
+
+    <Button
+        android:id="@+id/btn_exit"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="@dimen/main_activity_corner_btn"
+        android:layout_height="@dimen/main_activity_corner_btn"
+        android:background="@drawable/exit"
+        />
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/main_activity_text_size"
+        android:text="@string/metro_n_planning"
+        android:textStyle="bold"
+        android:layout_below="@id/btn_setting"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/main_activity_text_margin_top"
+        android:textColor="@color/main_activity_blue_grey_900"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/level_list"
+        android:layout_marginTop="@dimen/main_activity_list_margin_top"
+        android:layout_marginBottom="@dimen/main_activity_list_margin_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_title"
+        android:layout_above="@id/btn_exit"
+        />
+
+
+</RelativeLayout>
