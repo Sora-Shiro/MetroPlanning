@@ -131,9 +131,16 @@ public class MainActivity extends AppCompatActivity implements ExitDialog.ExitEv
             @Override
             public void onItemLongClick(View view, int position) {
                 LogAndToastUtil.ToastOut(MainActivity.this, "Loading...");
-                Intent intent = new Intent(MainActivity.this, GameActivity.class);
-                intent.putExtra("level", position+1);
-                startActivity(intent);
+                if(position == 0) {
+                    Intent intent = new Intent(MainActivity.this, GameTutorialActivity.class);
+                    intent.putExtra("level", position+1);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                    intent.putExtra("level", position+1);
+                    startActivity(intent);
+                }
+
             }
         });
         mRcLevelList.setAdapter(mLevelListAdapter);

@@ -18,4 +18,6 @@
     <string name="sora_shiro">Sora Shiro</string>
     <string name="github">Github</string>
     <string name="sora_shiro_github">Sora-Shiro</string>
+    <string name="tutorial_explain">You can set up\nturnouts and stations\nBEFORE click START :)</string>
+    <string name="tutorial_explain_2">To know more,\n please return\nMain Page and\nCLICK \'?\' and\nread help message\ncarefully :)</string>
 </resources>
