@@ -7,14 +7,18 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 
 import com.azoft.carousellayoutmanager.CarouselLayoutManager;
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.sorashiro.metroplanning.adapter.LevelListAdapter;
 import com.sorashiro.metroplanning.jni.CoreData;
+import com.sorashiro.metroplanning.util.AnimationUtil;
 import com.sorashiro.metroplanning.util.AppSaveDataSPUtil;
+import com.sorashiro.metroplanning.util.AppUtil;
 import com.sorashiro.metroplanning.util.LogAndToastUtil;
 
 import java.util.ArrayList;
@@ -22,12 +26,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by GameKing on 2017/5/5.
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ExitDialog.ExitEvent {
 
     @BindView(R2.id.level_list)
     RecyclerView mRcLevelList;
@@ -35,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private List<String> mListData;
     private LevelListAdapter mLevelListAdapter;
 
-
-    private MediaPlayer   mMediaPlayer;
+    private MediaPlayer mMediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +68,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mMediaPlayer != null && mMediaPlayer.isPlaying() && !AppUtil.isAppOnForeground(this)) {
             mMediaPlayer.pause();
         }
     }
@@ -72,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
     }
 
     //防止后台进入刷新，对部分机型无效
@@ -81,10 +91,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initMusic() {
-        //初始化BGM参数
-        mMediaPlayer = new MediaPlayer();
-        mMediaPlayer = MediaPlayer.create(this, ConstantValue.GAME_MUSIC);
-        mMediaPlayer.setLooping(true);
+        mMediaPlayer = BGMPlayer.getMediaPlayer(this);
     }
 
     private void initData() {
@@ -122,6 +129,57 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mRcLevelList.setAdapter(mLevelListAdapter);
+    }
+
+    @OnClick({R.id.btn_setting, R.id.btn_help, R.id.btn_list, R.id.btn_exit})
+    public void onBtnClick(View view) {
+        AnimationUtil.twinkle(view);
+        switch (view.getId()) {
+            case R.id.btn_setting:
+                break;
+            case R.id.btn_help:
+                break;
+            case R.id.btn_list:
+                Intent listIntent = new Intent(MainActivity.this, ListActivity.class);
+                startActivity(listIntent);
+                break;
+            case R.id.btn_exit:
+                showExitDialog();
+                break;
+        }
+    }
+
+    private void showExitDialog() {
+        ExitDialog exitDialog = new ExitDialog(this);
+        Window window = exitDialog.getWindow();
+        assert window != null;
+        window.setGravity(Gravity.CENTER);
+        exitDialog.setExitEvent(this);
+        exitDialog.show();
+    }
+
+    @Override
+    public void exit() {
+        finish();
+    }
+
+    @Override
+    public void noExit() {
+        //Do Nothing
+    }
+
+    //更改BGM状态时要调用该函数
+    private void toggleMediaPlayer() {
+        if(!AppSaveDataSPUtil.getIfMusicOn()){
+            return;
+        }
+        if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
+            mMediaPlayer.pause();
+        } else {
+            if (mMediaPlayer != null && !mMediaPlayer.isPlaying()) {
+                mMediaPlayer.start();
+            }
+        }
     }
 
 }

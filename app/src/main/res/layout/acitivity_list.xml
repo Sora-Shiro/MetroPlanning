@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/layout_root"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_background"
+              android:clickable="true"
+              android:gravity="center"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/metro_n_planning"
+        android:textColor="@color/main_activity_blue_grey_900"
+        android:textSize="@dimen/main_activity_text_size"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/text_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/v1_0"
+        android:textColor="@color/main_activity_blue_grey_900"
+        android:textSize="30sp"
+        />
+
+    <TextView
+        android:id="@+id/text_work"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/program_music"
+        android:textColor="@color/main_activity_blue_grey_900"
+        android:textSize="@dimen/list_activity_version_size"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/text_author"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:text="@string/sora_shiro"
+        android:textColor="@color/main_activity_blue_grey_900"
+        android:textSize="@dimen/list_activity_version_size"
+        />
+
+    <TextView
+        android:id="@+id/text_github"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/github"
+        android:textColor="@color/main_activity_blue_grey_900"
+        android:textSize="@dimen/list_activity_version_size"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/text_github_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:text="@string/sora_shiro_github"
+        android:textColor="@color/main_activity_blue_grey_900"
+        android:textSize="@dimen/list_activity_version_size"
+        />
+
+</LinearLayout>

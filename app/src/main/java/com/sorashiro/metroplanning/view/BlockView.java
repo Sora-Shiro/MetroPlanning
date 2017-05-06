@@ -1,18 +1,13 @@
 package com.sorashiro.metroplanning.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.drawable.Drawable;
-import android.text.Layout;
-import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.TypedValue;
+import android.util.SparseArray;
 import android.view.View;
-import android.widget.TextView;
 
 import com.sorashiro.metroplanning.ConstantValue;
 import com.sorashiro.metroplanning.R;
@@ -21,8 +16,6 @@ import com.sorashiro.metroplanning.model.Metro;
 import com.sorashiro.metroplanning.model.Station;
 import com.sorashiro.metroplanning.model.Turnout;
 import com.sorashiro.metroplanning.util.DisplayUtil;
-import com.sorashiro.metroplanning.util.Drawable2Bitmap;
-import com.sorashiro.metroplanning.util.LogAndToastUtil;
 
 import java.util.HashMap;
 
@@ -37,13 +30,12 @@ public class BlockView extends View {
 
     private int blockX;
     private int blockY;
-    private int blockZ;
 
     private Paint     mPaint      = new Paint();
     private Path      mPath       = new Path();
     private TextPaint mWhitePaint = new TextPaint();
 
-    private HashMap<Integer, BlockBase> mBlockBaseHashMap = new HashMap<>();
+    private SparseArray<BlockBase> mBlockBaseHashMap = new SparseArray<>();
 
     public BlockView(Context context) {
         super(context);
@@ -208,13 +200,5 @@ public class BlockView extends View {
 
     public void setBlockY(int blockY) {
         this.blockY = blockY;
-    }
-
-    public int getBlockZ() {
-        return blockZ;
-    }
-
-    public void setBlockZ(int blockZ) {
-        this.blockZ = blockZ;
     }
 }

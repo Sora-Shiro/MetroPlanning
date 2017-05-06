@@ -24,6 +24,7 @@ import com.sorashiro.metroplanning.model.Turnout;
 import com.sorashiro.metroplanning.model.Usable;
 import com.sorashiro.metroplanning.util.AnimationUtil;
 import com.sorashiro.metroplanning.util.AppSaveDataSPUtil;
+import com.sorashiro.metroplanning.util.AppUtil;
 import com.sorashiro.metroplanning.util.LogAndToastUtil;
 import com.sorashiro.metroplanning.util.ShapeUtil;
 import com.sorashiro.metroplanning.view.BlockView;
@@ -73,9 +74,6 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
     private int targetPassenger;
     private int finishPassenger;
 
-    private ShapeDrawable mNothingDrawable;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,8 +104,14 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
         ifGamePause = true;
-        if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
+        mBtnStart.setText(getResources().getString(R.string.resume));
+        if (mMediaPlayer != null && mMediaPlayer.isPlaying() && !AppUtil.isAppOnForeground(this)) {
             mMediaPlayer.pause();
         }
     }
@@ -145,10 +149,10 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
     private void canStartGameAnimation() {
         String text  = "Level\n" + mLevel;
         mTextGameOver.setText(text);
-        YoYo.with(Techniques.RollIn).duration(800).onEnd(new YoYo.AnimatorCallback() {
+        YoYo.with(Techniques.RollIn).duration(1000).onEnd(new YoYo.AnimatorCallback() {
             @Override
             public void call(Animator animator) {
-                YoYo.with(Techniques.RollOut).delay(800).duration(800).onEnd(new YoYo.AnimatorCallback() {
+                YoYo.with(Techniques.RollOut).delay(500).duration(1000).onEnd(new YoYo.AnimatorCallback() {
                     @Override
                     public void call(Animator animator) {
                         YoYo.with(Techniques.Flash).duration(500).onEnd(new YoYo.AnimatorCallback() {
@@ -166,24 +170,7 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
     }
 
     private void initMusic() {
-        //初始化BGM参数
-        mMediaPlayer = new MediaPlayer();
-        mMediaPlayer = MediaPlayer.create(this, ConstantValue.GAME_MUSIC);
-        mMediaPlayer.setLooping(true);
-    }
-
-    //更改BGM状态时要调用该函数
-    private void toggleMediaPlayer() {
-        if(!AppSaveDataSPUtil.getIfMusicOn()){
-            return;
-        }
-        if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
-            mMediaPlayer.pause();
-        } else {
-            if (mMediaPlayer != null && !mMediaPlayer.isPlaying()) {
-                mMediaPlayer.start();
-            }
-        }
+        mMediaPlayer = BGMPlayer.getMediaPlayer(this);
     }
 
     private void initMap() {
@@ -274,7 +261,6 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
         mProgressPassenger.setMax(targetPassenger);
         mProgressPassenger.setProgress(finishPassenger);
 
-        mNothingDrawable = ShapeUtil.getNothingDrawable();
         mMapImg = new BlockView[mMapSize][mMapSize];
         for (int i = 0; i < mLayerSize; i++) {
             for (int j = 0; j < mMapSize; j++) {

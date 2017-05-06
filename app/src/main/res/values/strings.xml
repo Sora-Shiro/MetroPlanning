@@ -11,4 +11,11 @@
     <string name="confirm">Confirm</string>
     <string name="metro_n_planning">METRO\nPLANNING</string>
     <string name="prepare">Prepare</string>
+    <string name="no">no</string>
+    <string name="exit">exit</string>
+    <string name="v1_0">v1.0</string>
+    <string name="program_music"><![CDATA[Program & Music]]></string>
+    <string name="sora_shiro">Sora Shiro</string>
+    <string name="github">Github</string>
+    <string name="sora_shiro_github">Sora-Shiro</string>
 </resources>
