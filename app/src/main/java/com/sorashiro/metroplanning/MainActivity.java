@@ -6,7 +6,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -117,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemLongClick(View view, int position) {
                 LogAndToastUtil.ToastOut(MainActivity.this, "Loading...");
-                Intent intent = new Intent(MainActivity.this, GameActivitydd.class);
+                Intent intent = new Intent(MainActivity.this, GameActivity.class);
                 intent.putExtra("level", position+1);
                 startActivity(intent);
             }

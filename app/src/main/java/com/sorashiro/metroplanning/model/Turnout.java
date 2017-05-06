@@ -15,15 +15,11 @@ public class Turnout extends BlockBase {
 
     private int orientation;
 
-    private Drawable[] turnoutDrawable;
-
-    public Turnout(int x, int y, int color, int orientation, Drawable[] turnoutDrawable) {
+    public Turnout(int x, int y, int color, int orientation) {
         super(ConstantValue.TURNOUT, color, ConstantValue.LAYER_0);
         this.x = x;
         this.y = y;
         this.orientation = orientation;
-        this.turnoutDrawable = turnoutDrawable;
-
     }
 
     @Override
@@ -71,11 +67,4 @@ public class Turnout extends BlockBase {
         }
     }
 
-    public Drawable[] getTurnoutDrawable() {
-        return turnoutDrawable;
-    }
-
-    public void setTurnoutDrawable(Drawable[] turnoutDrawable) {
-        this.turnoutDrawable = turnoutDrawable;
-    }
 }

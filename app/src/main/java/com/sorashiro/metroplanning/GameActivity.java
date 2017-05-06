@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,6 +27,7 @@ import com.sorashiro.metroplanning.util.AppSaveDataSPUtil;
 import com.sorashiro.metroplanning.util.LogAndToastUtil;
 import com.sorashiro.metroplanning.util.ShapeUtil;
 import com.sorashiro.metroplanning.view.BlockView;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class GameActivity extends AppCompatActivity implements View.OnClickListener {
+public class GameActivity extends RxAppCompatActivity implements View.OnClickListener {
 
     @BindView(R2.id.progress_time)
     IconRoundCornerProgressBar mProgressTime;
@@ -64,7 +64,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private int mLayerSize = ConstantValue.LAYER_SIZE;
     private BlockBase[][][] mMapTotal;
     private BlockBase[][][] mMapCurrent;
-    private BlockView[][][] mMapImg;
+    private BlockView[][] mMapImg;
 
     private ArrayList<Metro> mMetros;
 
@@ -87,7 +87,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         initMap();
 
-        initTarget();
+        initProgress();
 
         initView();
 
@@ -116,6 +116,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy() {
         super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
+        for(Flowable flowable : mFlowables) {
+            flowable.unsubscribeOn(AndroidSchedulers.mainThread());
+        }
     }
 
     //防止后台进入刷新，对部分机型无效
@@ -142,16 +145,17 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private void canStartGameAnimation() {
         String text  = "Level\n" + mLevel;
         mTextGameOver.setText(text);
-        YoYo.with(Techniques.RollIn).duration(1000).onEnd(new YoYo.AnimatorCallback() {
+        YoYo.with(Techniques.RollIn).duration(800).onEnd(new YoYo.AnimatorCallback() {
             @Override
             public void call(Animator animator) {
-                YoYo.with(Techniques.RollOut).delay(1000).duration(1000).onEnd(new YoYo.AnimatorCallback() {
+                YoYo.with(Techniques.RollOut).delay(800).duration(800).onEnd(new YoYo.AnimatorCallback() {
                     @Override
                     public void call(Animator animator) {
-                        YoYo.with(Techniques.Flash).duration(1000).onStart(new YoYo.AnimatorCallback() {
+                        YoYo.with(Techniques.Flash).duration(500).onEnd(new YoYo.AnimatorCallback() {
                             @Override
                             public void call(Animator animator) {
                                 mTextGameOver.setVisibility(View.GONE);
+                                mBtnStart.setText(getResources().getString(R.string.start));
                                 mBtnStart.setClickable(true);
                             }
                         }).playOn(mBtnStart);
@@ -207,86 +211,55 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-        //初始化颜色
-        int black = getResources().getColor(R.color.block_black);
-        int blackTr = getResources().getColor(R.color.block_black_transparent);
-
         HashMap<String, Integer> oriMap = new HashMap<>();
         oriMap.put("down", ConstantValue.DOWN);
         oriMap.put("up", ConstantValue.UP);
         oriMap.put("left", ConstantValue.LEFT);
         oriMap.put("right", ConstantValue.RIGHT);
 
-        SparseArray<ShapeDrawable[]> metroDrawables = new SparseArray<>();
         mMetros = new ArrayList<>();
         //i从1开始，不读取Block总数量
         for (int i = 1; i < metroData.length; i += 6) {
             int x = Integer.parseInt(metroData[i]);
             int y = Integer.parseInt(metroData[i + 1]);
-            //注意地铁在第二层View中，颜色要比第一层略浅，但是color属性还是black，方便识别
-            int fadeColor = getResources().getColor(getResources().getIdentifier(
-                    "block_" + metroData[i + 2], "color", getPackageName()));
             int color = getResources().getColor(getResources().getIdentifier(
-                    "block_" + metroData[i + 2] + "_transparent", "color", getPackageName()));
+                    "block_" + metroData[i + 2], "color", getPackageName()));
             int orientation = oriMap.get(metroData[i + 3]);
             int speed = Integer.parseInt(metroData[i + 4]);
             int fullLoad = Integer.parseInt(metroData[i + 5]);
-            ShapeDrawable[] drawables;
-            if (metroDrawables.get(color) != null) {
-                drawables = metroDrawables.get(color);
-            } else {
-                drawables = ShapeUtil.getRegTris(color);
-                metroDrawables.put(color, drawables);
-            }
             Metro metro = new Metro(
-                    x, y, fadeColor, orientation,
-                    speed, fullLoad, drawables
+                    x, y, color, orientation,
+                    speed, fullLoad
             );
             mMapCurrent[1][x][y] = metro;
             mMetros.add(metro);
         }
 
-        SparseArray<ShapeDrawable> stationDrawables = new SparseArray<>();
         for (int i = 1; i < stationData.length; i += 4) {
             int x = Integer.parseInt(stationData[i]);
             int y = Integer.parseInt(stationData[i + 1]);
             int color = getResources().getColor(getResources().getIdentifier(
                     "block_" + stationData[i + 2], "color", getPackageName()));
             int passenger = Integer.parseInt(stationData[i + 3]);
-            ShapeDrawable drawables;
-            if (stationDrawables.get(color) != null) {
-                drawables = stationDrawables.get(color);
-            } else {
-                drawables = ShapeUtil.getRectangleDrawable(color);
-                stationDrawables.put(color, drawables);
-            }
             Station station = new Station(
                     x, y, color,
-                    passenger, drawables);
+                    passenger);
             mMapCurrent[0][x][y] = station;
         }
 
-        SparseArray<ShapeDrawable[]> turnoutDrawables = new SparseArray<>();
         for (int i = 1; i < turnoutData.length; i += 4) {
             int x = Integer.parseInt(turnoutData[i]);
             int y = Integer.parseInt(turnoutData[i + 1]);
             int color = getResources().getColor(getResources().getIdentifier(
                     "block_" + turnoutData[i + 2], "color", getPackageName()));
             int orientation = oriMap.get(turnoutData[i + 3]);
-            ShapeDrawable[] drawables;
-            if (turnoutDrawables.get(color) != null) {
-                drawables = turnoutDrawables.get(color);
-            } else {
-                drawables = ShapeUtil.getArrows(color);
-                turnoutDrawables.put(color, drawables);
-            }
-            Turnout turnout = new Turnout(x, y, color, orientation, drawables);
+            Turnout turnout = new Turnout(x, y, color, orientation);
             mMapCurrent[0][x][y] = turnout;
         }
 
     }
 
-    private void initTarget() {
+    private void initProgress() {
         remainTime = 0;
         finishPassenger = 0;
     }
@@ -302,49 +275,39 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         mProgressPassenger.setProgress(finishPassenger);
 
         mNothingDrawable = ShapeUtil.getNothingDrawable();
-        mMapImg = new BlockView[mLayerSize][mMapSize][mMapSize];
+        mMapImg = new BlockView[mMapSize][mMapSize];
         for (int i = 0; i < mLayerSize; i++) {
             for (int j = 0; j < mMapSize; j++) {
                 for (int k = 0; k < mMapSize; k++) {
-                    mMapImg[i][j][k] = (BlockView) findViewById(
+                    mMapImg[j][k] = (BlockView) findViewById(
                             getResources().getIdentifier(
-                                    "map_" + i + "_" + j + "_" + k, "id", getPackageName()));
-                    mMapImg[i][j][k].setOnClickListener(this);
-                    mMapImg[i][j][k].setBlockX(j);
-                    mMapImg[i][j][k].setBlockY(k);
-                    mMapImg[i][j][k].setBlockZ(i);
+                                    "map_" + 0 + "_" + j + "_" + k, "id", getPackageName()));
+                    mMapImg[j][k].setOnClickListener(this);
+                    mMapImg[j][k].setBlockX(j);
+                    mMapImg[j][k].setBlockY(k);
                     switch (mMapCurrent[i][j][k].getType()) {
                         case ConstantValue.METRO:
                             Metro metro = (Metro) mMapCurrent[i][j][k];
-                            mMapImg[i][j][k].setBackgroundDrawable(
-                                    metro.getMetroDrawable()[metro.getOrientation()]);
-                            String metroText = metro.getPassenger() + "";
-                            mMapImg[i][j][k].setText(metroText);
-                            mMapImg[i][j][k].setVisibility(View.VISIBLE);
+                            mMapImg[j][k].setBlockBase(i+1, metro);
+                            mMapImg[j][k].setVisibility(View.VISIBLE);
                             break;
                         case ConstantValue.STATION:
                             Station station = (Station) mMapCurrent[i][j][k];
-                            mMapImg[i][j][k].setBackgroundDrawable(
-                                    station.getStationDrawable()
-                            );
+                            mMapImg[j][k].setBlockBase(i+1, station);
                             int passenger = station.getPassenger();
                             int priority = station.getPriority();
                             String text = passenger + "\n" + priority;
-                            mMapImg[i][j][k].setText(text);
-                            mMapImg[i][j][k].setVisibility(View.VISIBLE);
+                            mMapImg[j][k].setVisibility(View.VISIBLE);
                             break;
                         case ConstantValue.TURNOUT:
                             Turnout turnout = (Turnout) mMapCurrent[i][j][k];
-                            mMapImg[i][j][k].setBackgroundDrawable(
-                                    turnout.getTurnoutDrawable()[turnout.getOrientation()]
-                            );
-                            mMapImg[i][j][k].setVisibility(View.VISIBLE);
+                            mMapImg[j][k].setBlockBase(i+1, turnout);
+                            mMapImg[j][k].setVisibility(View.VISIBLE);
                             break;
                         case ConstantValue.OUTBOUND:
                             break;
                         case ConstantValue.USABLE:
-                            mMapImg[i][j][k].setBackgroundDrawable(mNothingDrawable);
-                            mMapImg[i][j][k].setVisibility(View.GONE);
+                            mMapImg[j][k].setBlockBase(i+1, null);
                             break;
                     }
                 }
@@ -399,22 +362,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private void moveMetroToPosition(final int beforeX, final int beforeY, final int afterX, final int afterY) {
         final Metro metro = (Metro) (mMapCurrent[1][beforeX][beforeY]);
-        mMapCurrent[1][beforeX][beforeY] = new Usable(
+        final Usable usable = new Usable(
                 beforeX, beforeY, getResources().getColor(R.color.block_universal));
+        mMapCurrent[1][beforeX][beforeY] = usable;
         mMapCurrent[1][afterX][afterY] = metro;
 
-        final ShapeDrawable drawable = (ShapeDrawable) metro.getMetroDrawable()[metro.getOrientation()];
         final String text = metro.getPassenger() + "";
         //主线程操作
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                mMapImg[1][beforeX][beforeY].setBackgroundDrawable(mNothingDrawable);
-                mMapImg[1][beforeX][beforeY].setText("");
-                mMapImg[1][beforeX][beforeY].setVisibility(View.GONE);
-                mMapImg[1][afterX][afterY].setBackgroundDrawable(drawable);
-                mMapImg[1][afterX][afterY].setText(text);
-                mMapImg[1][afterX][afterY].setVisibility(View.VISIBLE);
+                mMapImg[beforeX][beforeY].setBlockBase(2, null);
+                mMapImg[afterX][afterY].setBlockBase(2, metro);
             }
         });
 
@@ -425,13 +384,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             Turnout turnout = (Turnout) mMapCurrent[0][x][y];
             final int orientation = turnout.getOrientation();
             final Metro metro = (Metro) mMapCurrent[1][x][y];
-            final TextView textView = mMapImg[1][x][y];
+            final BlockView blockView = mMapImg[x][y];
             //主线程操作
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     metro.setOrientation(orientation);
-                    textView.setBackgroundDrawable(metro.getMetroDrawable()[orientation]);
+                    blockView.setBlockBase(2, metro);
                 }
             });
         }
@@ -480,7 +439,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         final Metro metro = (Metro) mMapCurrent[1][x][y];
         int preStationX = metro.getPreStationX();
         int preStationY = metro.getPreStationY();
-        Station station = (Station) list.get(index);
+        final Station station = (Station) list.get(index);
         final int curStationX = station.getX();
         final int curStationY = station.getY();
         if (preStationX == curStationX && preStationY == curStationY) {
@@ -516,7 +475,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    mMapImg[1][x][y].setText("0");
                     metro.setPassenger(0);
                     mProgressPassenger.setProgress(finishPassenger);
                     //运送了要记住出发点
@@ -540,29 +498,21 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         int fullLoad = metro.getFullLoad();
         final int loadPassenger = fullLoad < stationPassenger ? fullLoad : stationPassenger;
 
+        //地铁站乘客数量处理
+        stationPassenger -= loadPassenger;
+        station.setPassenger(stationPassenger);
+
         //主线程操作
         final String metroText = loadPassenger + "";
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                mMapImg[1][x][y].setText(metroText);
                 metro.setPassenger(loadPassenger);
                 //运送了要记住出发点
                 metro.setPreStationX(curStationX);
                 metro.setPreStationY(curStationY);
-            }
-        });
-        //地铁站乘客数量处理
-        stationPassenger -= loadPassenger;
-        station.setPassenger(stationPassenger);
-        int priority = station.getPriority();
-        final String stationText = stationPassenger + "\n" + priority;
-        final TextView stationTv = mMapImg[0][curStationX][curStationY];
-        //主线程操作
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                stationTv.setText(stationText);
+                //地铁站乘客数量处理
+                mMapImg[curStationX][curStationY].setBlockBase(1, station);
             }
         });
     }
@@ -594,19 +544,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     mTextGameOver.setText(getString(R.string.time_out));
                     gameOverAnimation();
                 } else if (failType == ConstantValue.FAIL_OUT_BOUND) {
-                    mMapImg[1][bx][by].setVisibility(View.GONE);
+                    mMapImg[bx][by].setVisibility(View.GONE);
                     mTextGameOver.setText(getString(R.string.game_over));
                     gameOverAnimation();
                 } else if (failType == ConstantValue.FAIL_HIT_SOMETHING) {
-                    Drawable brust = getResources().getDrawable(R.drawable.burst);
-                    mMapImg[1][bx][by].setBackgroundDrawable(mNothingDrawable);
-                    mMapImg[0][bx][by].setText("");
-                    mMapImg[1][bx][by].setText("");
-                    mMapImg[0][x][y].setText("");
-                    mMapImg[1][x][y].setText("");
-                    mMapImg[0][x][y].setVisibility(View.GONE);
-                    mMapImg[1][x][y].setBackgroundDrawable(brust);
-                    mMapImg[1][x][y].setVisibility(View.VISIBLE);
+                    Drawable burst = getResources().getDrawable(R.drawable.burst);
+                    mMapImg[bx][by].clearBlockBase();
+                    mMapImg[x][y].clearBlockBase();
+                    mMapImg[x][y].setBackgroundDrawable(burst);
+                    mMapImg[x][y].setVisibility(View.VISIBLE);
                     YoYo.with(Techniques.Wobble).duration(500).onEnd(new YoYo.AnimatorCallback() {
                         @Override
                         public void call(Animator animator) {
@@ -616,9 +562,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                                     mTextGameOver.setText(getString(R.string.game_over));
                                     gameOverAnimation();
                                 }
-                            }).playOn(mMapImg[1][x][y]);
+                            }).playOn(mMapImg[x][y]);
                         }
-                    }).playOn(mMapImg[1][x][y]);
+                    }).playOn(mMapImg[x][y]);
                 }
             }
         });
@@ -651,11 +597,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }).playOn(mTextGameOver);
     }
 
-    boolean ifGameStart = false;
-    boolean ifGamePause = false;
-
+    boolean                     ifGameStart = false;
+    boolean                     ifGamePause = false;
+    ArrayList<Flowable<String>> mFlowables  = new ArrayList<>();
     @OnClick(R.id.btn_start)
     public void onBtnStartClick(View view) {
+        AnimationUtil.twinkle(view);
         if (ifGameStart) {
             ifGamePause = !ifGamePause;
             changeBtnText();
@@ -680,7 +627,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 .subscribe(timeConsumer);
 
         //地铁启动
-        ArrayList<Flowable<String>> flowables = new ArrayList<>();
         for (final Metro metro : mMetros) {
             Flowable<String> flowable = Flowable.create(new FlowableOnSubscribe<String>() {
                 @Override
@@ -709,10 +655,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     e.onComplete();
                 }
             }, BackpressureStrategy.BUFFER).repeat();
-            flowables.add(flowable);
+            mFlowables.add(flowable);
         }
-        for (Flowable<String> flowable : flowables) {
+        for (Flowable<String> flowable : mFlowables) {
             flowable.subscribeOn(Schedulers.computation())
+                    .compose(this.<String>bindToLifecycle())
                     .subscribe(metroConsumer);
         }
 
@@ -774,31 +721,33 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         BlockView blockView = (BlockView) v;
         int x = blockView.getBlockX();
         int y = blockView.getBlockY();
-        int z = blockView.getBlockZ();
-        int type = mMapCurrent[z][x][y].getType();
         AnimationUtil.twinkle(v);
-        switch (z) {
-            case 0:
-                if (type == ConstantValue.TURNOUT) {
-                    Turnout turnout = ((Turnout) mMapCurrent[z][x][y]);
-                    turnout.rotateClockwise();
-                    mMapImg[z][x][y].setBackgroundDrawable(
-                            turnout.getTurnoutDrawable()[turnout.getOrientation()]);
-                } else if (type == ConstantValue.STATION) {
-                    Station station = ((Station) mMapCurrent[z][x][y]);
-                    int priority = (station.getPriority() + 1) % 5;
-                    priority = priority == 0 ? 5 : priority;
-                    station.setPriority(priority);
-                    mMapImg[z][x][y].setText(station.getPassenger() + "\n" + station.getPriority());
-                }
-                break;
-            case 1:
-                if (type == ConstantValue.METRO) {
-                    ((Metro) mMapCurrent[z][x][y])
-                            .setDriving(
-                                    !((Metro) mMapCurrent[z][x][y]).isDriving());
-                }
-                break;
+        for(int z = 1; z >= 0; z--) {
+            int type = mMapCurrent[z][x][y].getType();
+            switch (z) {
+                case 0:
+                    if (type == ConstantValue.TURNOUT) {
+                        Turnout turnout = ((Turnout) mMapCurrent[z][x][y]);
+                        turnout.rotateClockwise();
+                        LogAndToastUtil.LogV(turnout.getOrientation()+"");
+                        mMapImg[x][y].setBlockBase(1, turnout);
+                    } else if (type == ConstantValue.STATION) {
+                        Station station = ((Station) mMapCurrent[z][x][y]);
+                        int priority = (station.getPriority() + 1) % 5;
+                        priority = priority == 0 ? 5 : priority;
+                        station.setPriority(priority);
+                        mMapImg[x][y].setBlockBase(1, station);
+                    }
+                    break;
+                case 1:
+                    if (type == ConstantValue.METRO) {
+                        ((Metro) mMapCurrent[z][x][y])
+                                .setDriving(
+                                        !((Metro) mMapCurrent[z][x][y]).isDriving());
+                        return;
+                    }
+                    break;
+            }
         }
     }
 

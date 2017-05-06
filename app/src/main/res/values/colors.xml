@@ -22,17 +22,19 @@
     <color name="yellow_error">#DDAA00</color>
     <color name="btn_divider">#bdbdbd</color>
 
-    <color name="block_universal">#ffffff</color>
-    <color name="block_black">#ff3c3c3c</color>
-    <color name="block_black_transparent">#dc3c3c3c</color>
-    <color name="block_blue">#ff2196f3</color>
+    <color name="block_universal">#ffffffff</color>
+    <color name="block_black">#e63c3c3c</color>
+    <color name="block_black_transparent">#e63c3c3c</color>
+    <color name="block_blue">#e62196f3</color>
     <color name="block_blue_transparent">#dc2196f3</color>
-    <color name="block_green">#ff4caf50</color>
+    <color name="block_green">#e64caf50</color>
     <color name="block_green_transparent">#dc4caf50</color>
-    <color name="block_orange">#ffffb74d</color>
+    <color name="block_orange">#e6ffb74d</color>
     <color name="block_orange_transparent">#dcffb74d</color>
-    <color name="block_purple">#ffab47bc</color>
+    <color name="block_purple">#e6ab47bc</color>
     <color name="block_purple_transparent">#dcab47bc</color>
+
+    <color name="btn_start">#bbdefb</color>
 
     <color name="progress_blue_bg">#81d4fa</color>
     <color name="progress_blue_first">#4fc3f7</color>

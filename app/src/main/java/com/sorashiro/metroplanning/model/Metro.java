@@ -1,12 +1,10 @@
 package com.sorashiro.metroplanning.model;
 
-import android.graphics.drawable.Drawable;
-
 import com.sorashiro.metroplanning.ConstantValue;
 
 /**
  * Created by GameKing on 2017/4/30.
- * 由于Metro的特殊性，使用他的set方法务必在主线程执行，可以考虑使用原子性操作
+ * 由于Metro的特殊性，使用他的set方法务必在主线程执行
  */
 
 public class Metro extends BlockBase {
@@ -26,9 +24,8 @@ public class Metro extends BlockBase {
     private int preStationX;
     private int preStationY;
 
-    private Drawable[] metroDrawable;
 
-    public Metro(int x, int y, int color, int orientation, int speed, int fullLoad, Drawable[] drawables) {
+    public Metro(int x, int y, int color, int orientation, int speed, int fullLoad) {
         super(ConstantValue.METRO, color, ConstantValue.LAYER_1);
         this.x = x;
         this.y = y;
@@ -40,7 +37,6 @@ public class Metro extends BlockBase {
         this.fullLoad = fullLoad;
         this.preStationX = -1;
         this.preStationY = -1;
-        this.metroDrawable = drawables;
     }
 
 
@@ -142,14 +138,6 @@ public class Metro extends BlockBase {
 
     public void setPreStationY(int preStationY) {
         this.preStationY = preStationY;
-    }
-
-    public Drawable[] getMetroDrawable() {
-        return metroDrawable;
-    }
-
-    public void setMetroDrawable(Drawable[] metroDrawable) {
-        this.metroDrawable = metroDrawable;
     }
 
     public void updatePosition(){

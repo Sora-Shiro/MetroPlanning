@@ -16,14 +16,11 @@ public class Station extends BlockBase {
     private int passenger;
     private int priority;
 
-    private Drawable stationDrawable;
-
-    public Station(int x, int y, int color, int passenger, Drawable drawable) {
+    public Station(int x, int y, int color, int passenger) {
         super(ConstantValue.STATION, color, ConstantValue.LAYER_0);
         this.x = x;
         this.y = y;
         this.passenger = passenger;
-        this.stationDrawable = drawable;
         this.priority = 1;
     }
 
@@ -63,11 +60,4 @@ public class Station extends BlockBase {
         this.priority = priority;
     }
 
-    public Drawable getStationDrawable() {
-        return stationDrawable;
-    }
-
-    public void setStationDrawable(Drawable stationDrawable) {
-        this.stationDrawable = stationDrawable;
-    }
 }

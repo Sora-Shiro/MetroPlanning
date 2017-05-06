@@ -4,15 +4,23 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.drawable.Drawable;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.view.View;
 import android.widget.TextView;
 
 import com.sorashiro.metroplanning.ConstantValue;
+import com.sorashiro.metroplanning.R;
 import com.sorashiro.metroplanning.model.BlockBase;
 import com.sorashiro.metroplanning.model.Metro;
 import com.sorashiro.metroplanning.model.Station;
 import com.sorashiro.metroplanning.model.Turnout;
+import com.sorashiro.metroplanning.util.DisplayUtil;
 import com.sorashiro.metroplanning.util.Drawable2Bitmap;
 import com.sorashiro.metroplanning.util.LogAndToastUtil;
 
@@ -22,7 +30,7 @@ import java.util.HashMap;
  * Created by GameKing on 2017/5/4.
  */
 
-public class BlockView extends TextView {
+public class BlockView extends View {
 
     private int width;
     private int height;
@@ -31,7 +39,9 @@ public class BlockView extends TextView {
     private int blockY;
     private int blockZ;
 
-    private Paint mPaint = new Paint();
+    private Paint     mPaint      = new Paint();
+    private Path      mPath       = new Path();
+    private TextPaint mWhitePaint = new TextPaint();
 
     private HashMap<Integer, BlockBase> mBlockBaseHashMap = new HashMap<>();
 
@@ -58,32 +68,119 @@ public class BlockView extends TextView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        mWhitePaint.setColor(getResources().getColor(R.color.white_text));
+        mWhitePaint.setTextSize(getResources().getDimension(R.dimen.block_text_size));
+        mWhitePaint.setTextAlign(Paint.Align.CENTER);
+
+        int px = DisplayUtil.sp2px(getContext(), getResources().getDimension(R.dimen.block_text_size));
+        int padding = px/7;
+
+        canvas.translate(width / 2, height / 2);
+
+        float small = width < height ? width : height;
+
         for(int i = 0; i <= mBlockBaseHashMap.size(); i++) {
             if(mBlockBaseHashMap.get(i) != null) {
+                canvas.save();
+                mPath.reset();
                 BlockBase blockBase = mBlockBaseHashMap.get(i);
-                Drawable drawable = null;
+                mPaint.setColor(blockBase.getColor());
                 switch (blockBase.getType()) {
                     case ConstantValue.METRO:
-                        drawable = ((Metro) blockBase).getMetroDrawable()[((Metro) blockBase).getOrientation()];
+                        Metro metro = (Metro) blockBase;
+
+                        switch (metro.getOrientation()) {
+                            case ConstantValue.DOWN:
+                                canvas.rotate(90);
+                                break;
+                            case ConstantValue.LEFT:
+                                canvas.rotate(180);
+                                break;
+                            case ConstantValue.UP:
+                                canvas.rotate(270);
+                                break;
+                            case ConstantValue.RIGHT:
+                                break;
+                        }
+                        //Right Orientation
+                        mPath.moveTo(-small / 2, -small / 2);
+                        mPath.lineTo(small / 2, 0);
+                        mPath.lineTo(-small / 2, small / 2);
+                        mPath.lineTo(-small / 2, -small / 2);
+                        mPath.close();
+                        canvas.drawPath(mPath, mPaint);
+
+                        canvas.restoreToCount(1);
+
+                        switch (metro.getOrientation()) {
+                            case ConstantValue.DOWN:
+                                canvas.drawText(metro.getPassenger()+"", 0, 0, mWhitePaint);
+                                break;
+                            case ConstantValue.LEFT:
+                                canvas.drawText(metro.getPassenger()+"", padding, padding, mWhitePaint);
+                                break;
+                            case ConstantValue.UP:
+                                canvas.drawText(metro.getPassenger()+"", 0, padding, mWhitePaint);
+                                break;
+                            case ConstantValue.RIGHT:
+                                canvas.drawText(metro.getPassenger()+"", -padding, padding, mWhitePaint);
+                                break;
+                        }
                         break;
                     case ConstantValue.STATION:
-                        drawable = ((Station) blockBase).getStationDrawable();
+                        Station station = (Station) blockBase;
+
+                        mPath.moveTo(-small / 2, -small / 2);
+                        mPath.lineTo(small / 2, -small / 2);
+                        mPath.lineTo(small / 2, small / 2);
+                        mPath.lineTo(-small / 2, small / 2);
+                        mPath.close();
+                        canvas.drawPath(mPath, mPaint);
+
+                        canvas.restoreToCount(1);
+
+                        String text = station.getPassenger() + "";
+                        String priority = station.getPriority() + "";
+                        canvas.drawText(text, 0, -px/6+padding, mWhitePaint);
+                        canvas.drawText(priority, 0, px/6+padding, mWhitePaint);
                         break;
                     case ConstantValue.TURNOUT:
-                        drawable = ((Turnout) blockBase).getTurnoutDrawable()[((Turnout) blockBase).getOrientation()];
+                        switch (((Turnout) blockBase).getOrientation()) {
+                            case ConstantValue.DOWN:
+                                canvas.rotate(90);
+                                break;
+                            case ConstantValue.LEFT:
+                                canvas.rotate(180);
+                                break;
+                            case ConstantValue.UP:
+                                canvas.rotate(270);
+                                break;
+                            case ConstantValue.RIGHT:
+                                break;
+                        }
+                        //Right Orientation
+                        mPath.moveTo(-0.43f * small, -0.07f * small);
+                        mPath.lineTo(-0.43f * small, 0.07f * small);
+                        mPath.lineTo(0.12f * small, 0.07f * small);
+                        mPath.lineTo(-0.17f * small, 0.38f * small);
+                        mPath.lineTo(0.06f * small, 0.38f * small);
+                        mPath.lineTo(0.43f * small, 0);
+                        mPath.lineTo(0.06f * small, -0.38f * small);
+                        mPath.lineTo(-0.17f * small, -0.38f * small);
+                        mPath.lineTo(0.12f * small, -0.07f * small);
+                        mPath.close();
+                        canvas.drawPath(mPath, mPaint);
+
+                        canvas.restoreToCount(1);
                         break;
                     case ConstantValue.USABLE:
                         continue;
                 }
-                Bitmap bitmap = Drawable2Bitmap.drawableToBitmap(drawable);
-                mPaint.setColor(blockBase.getColor());
-                canvas.drawBitmap(bitmap, 0, 0, mPaint);
             }
         }
     }
 
     public void setBlockBase(int layer, BlockBase blockBase) {
-        mBlockBaseHashMap.remove(layer);
         mBlockBaseHashMap.put(layer, blockBase);
         invalidate();
     }

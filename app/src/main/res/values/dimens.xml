@@ -4,7 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="block_margin">8dp</dimen>
-    <dimen name="block_text_size">17sp</dimen>
+    <dimen name="block_text_size">16sp</dimen>
 
     <dimen name="main_activity_corner_btn">40dp</dimen>
     <dimen name="main_activity_text_size">45sp</dimen>
