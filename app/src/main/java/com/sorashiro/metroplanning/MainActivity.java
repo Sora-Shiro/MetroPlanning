@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemLongClick(View view, int position) {
                 LogAndToastUtil.ToastOut(MainActivity.this, "Loading...");
-                Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                Intent intent = new Intent(MainActivity.this, GameActivitydd.class);
                 intent.putExtra("level", position+1);
                 startActivity(intent);
             }
