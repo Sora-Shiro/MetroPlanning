@@ -60,6 +60,12 @@ public class MainActivity extends AppCompatActivity implements ExitDialog.ExitEv
     @Override
     protected void onResume() {
         super.onResume();
+        int level = AppSaveDataSPUtil.getPassLevel() + 1;
+        if (level <= CoreData.getLevels() && mListData.size() < level) {
+            mListData.add(mListData.size(), level+"");
+            mLevelListAdapter.notifyItemInserted(mListData.size());
+            mRcLevelList.scrollToPosition(mListData.size());
+        }
         if (mMediaPlayer != null && !mMediaPlayer.isPlaying() && AppSaveDataSPUtil.getIfMusicOn()) {
             mMediaPlayer.start();
         }
@@ -97,7 +103,9 @@ public class MainActivity extends AppCompatActivity implements ExitDialog.ExitEv
     private void initData() {
         mListData = new ArrayList<>();
         int levels = CoreData.getLevels();
-        for(int i = 1; i <= levels; i++) {
+        int next = AppSaveDataSPUtil.getPassLevel() + 1;
+        int less = levels < next ? levels : next;
+        for (int i = 1; i <= less; i++) {
             mListData.add(i+"");
         }
     }
@@ -129,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements ExitDialog.ExitEv
             }
         });
         mRcLevelList.setAdapter(mLevelListAdapter);
+        mRcLevelList.scrollToPosition(mListData.size());
     }
 
     @OnClick({R.id.btn_setting, R.id.btn_help, R.id.btn_list, R.id.btn_exit})
@@ -138,6 +147,8 @@ public class MainActivity extends AppCompatActivity implements ExitDialog.ExitEv
             case R.id.btn_setting:
                 break;
             case R.id.btn_help:
+                Intent helpIntent = new Intent(MainActivity.this, HelpActivity.class);
+                startActivity(helpIntent);
                 break;
             case R.id.btn_list:
                 Intent listIntent = new Intent(MainActivity.this, ListActivity.class);

@@ -23,8 +23,9 @@ public class AppSaveDataSPUtil {
     //主目录
     private static final String DATA_CONFIG = "data_config";
 
-
     private static final String IF_MUSIC_ON = "if_music_on";
+
+    private static final String PASS_LEVEL = "pass_level";
 
     private static SharedPreferences        sSharedPreferences;
     private static SharedPreferences.Editor sEditor;
@@ -51,6 +52,15 @@ public class AppSaveDataSPUtil {
 
     public static boolean getIfMusicOn() {
         return sSharedPreferences.getBoolean(IF_MUSIC_ON, true);
+    }
+
+    public static void setPassLevel(int passLevel) {
+        sEditor.putInt(PASS_LEVEL, passLevel);
+        sEditor.commit();
+    }
+
+    public static int getPassLevel(){
+        return sSharedPreferences.getInt(PASS_LEVEL, 0);
     }
 
 }

@@ -3,7 +3,6 @@ package com.sorashiro.metroplanning;
 import android.animation.Animator;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,7 +25,6 @@ import com.sorashiro.metroplanning.util.AnimationUtil;
 import com.sorashiro.metroplanning.util.AppSaveDataSPUtil;
 import com.sorashiro.metroplanning.util.AppUtil;
 import com.sorashiro.metroplanning.util.LogAndToastUtil;
-import com.sorashiro.metroplanning.util.ShapeUtil;
 import com.sorashiro.metroplanning.view.BlockView;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
@@ -514,6 +512,10 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
                 ifGameOver = true;
                 mBtnStart.setClickable(false);
                 mTextGameOver.setText(getString(R.string.finish_level));
+                int passed = AppSaveDataSPUtil.getPassLevel();
+                if (mLevel > passed) {
+                    AppSaveDataSPUtil.setPassLevel(mLevel);
+                }
                 gameOverAnimation();
             }
         });

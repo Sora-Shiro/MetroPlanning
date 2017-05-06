@@ -5,12 +5,10 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sorashiro.metroplanning.util.AppSaveDataSPUtil;
 import com.sorashiro.metroplanning.util.AppUtil;
-import com.sorashiro.metroplanning.util.LogAndToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,17 +18,14 @@ import butterknife.OnClick;
  * Created by GameKing on 2017/5/6.
  */
 
-public class ListActivity extends AppCompatActivity {
-
-    @BindView(R2.id.text_version)
-    TextView mTextVersion;
+public class HelpActivity extends AppCompatActivity {
 
     MediaPlayer mMediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.acitivity_list);
+        setContentView(R.layout.activity_help);
 
         initMusic();
 
@@ -76,13 +71,6 @@ public class ListActivity extends AppCompatActivity {
 
     private void initView() {
         ButterKnife.bind(this);
-        try {
-            String text = "v" + AppUtil.getVersionName(this);
-            mTextVersion.setText(text);
-        } catch (Exception e) {
-            LogAndToastUtil.LogV(e.getMessage());
-            e.printStackTrace();
-        }
     }
 
     @OnClick(R.id.layout_root)
