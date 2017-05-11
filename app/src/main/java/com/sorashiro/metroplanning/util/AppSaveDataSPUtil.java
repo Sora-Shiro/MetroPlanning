@@ -3,6 +3,8 @@ package com.sorashiro.metroplanning.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.sorashiro.metroplanning.ConstantValue;
+
 import java.lang.ref.WeakReference;
 
 /**
@@ -26,6 +28,8 @@ public class AppSaveDataSPUtil {
     private static final String IF_MUSIC_ON = "if_music_on";
 
     private static final String PASS_LEVEL = "pass_level";
+
+    private static final String LANGUAGE = "language";
 
     private static SharedPreferences        sSharedPreferences;
     private static SharedPreferences.Editor sEditor;
@@ -61,6 +65,15 @@ public class AppSaveDataSPUtil {
 
     public static int getPassLevel(){
         return sSharedPreferences.getInt(PASS_LEVEL, 0);
+    }
+
+    public static void setLanguage(int language) {
+        sEditor.putInt(LANGUAGE, language);
+        sEditor.commit();
+    }
+
+    public static int getLanguage(){
+        return sSharedPreferences.getInt(LANGUAGE, ConstantValue.ENGLISH);
     }
 
 }

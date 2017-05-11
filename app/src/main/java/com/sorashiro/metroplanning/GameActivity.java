@@ -72,12 +72,16 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
     private int targetPassenger;
     private int finishPassenger;
 
+    private int lanType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
         AppSaveDataSPUtil.init(this);
+
+        lanType = AppSaveDataSPUtil.getLanguage();
 
         initMusic();
 
@@ -108,7 +112,7 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
     protected void onStop() {
         super.onStop();
         ifGamePause = true;
-        mBtnStart.setText(getResources().getString(R.string.resume));
+        mBtnStart.setText(GetResourceUtil.getString(this, "resume", lanType));
         if (mMediaPlayer != null && mMediaPlayer.isPlaying() && !AppUtil.isAppOnForeground(this)) {
             mMediaPlayer.pause();
         }
@@ -157,7 +161,7 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
                             @Override
                             public void call(Animator animator) {
                                 mTextGameOver.setVisibility(View.GONE);
-                                mBtnStart.setText(getResources().getString(R.string.start));
+                                mBtnStart.setText(GetResourceUtil.getString(GameActivity.this, "start", lanType));
                                 mBtnStart.setClickable(true);
                             }
                         }).playOn(mBtnStart);
@@ -253,6 +257,7 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
         ButterKnife.bind(this);
 
         mBtnStart.setClickable(false);
+        mBtnStart.setText(GetResourceUtil.getString(this, "prepare", lanType));
 
         mProgressTime.setMax(targetTime);
         mProgressTime.setProgress(remainTime);
@@ -511,7 +516,7 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
             public void run() {
                 ifGameOver = true;
                 mBtnStart.setClickable(false);
-                mTextGameOver.setText(getString(R.string.finish_level));
+                mTextGameOver.setText(GetResourceUtil.getString(GameActivity.this, "finish_level", lanType));
                 int passed = AppSaveDataSPUtil.getPassLevel();
                 if (mLevel > passed) {
                     AppSaveDataSPUtil.setPassLevel(mLevel);
@@ -528,12 +533,11 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
                 ifGameOver = true;
                 mBtnStart.setClickable(false);
                 if (failType == ConstantValue.FAIL_TIME_OUT) {
-
-                    mTextGameOver.setText(getString(R.string.time_out));
+                    mTextGameOver.setText(GetResourceUtil.getString(GameActivity.this, "time_out", lanType));
                     gameOverAnimation();
                 } else if (failType == ConstantValue.FAIL_OUT_BOUND) {
                     mMapImg[bx][by].setVisibility(View.GONE);
-                    mTextGameOver.setText(getString(R.string.game_over));
+                    mTextGameOver.setText(GetResourceUtil.getString(GameActivity.this, "game_over", lanType));
                     gameOverAnimation();
                 } else if (failType == ConstantValue.FAIL_HIT_SOMETHING) {
                     Drawable burst = getResources().getDrawable(R.drawable.burst);
@@ -547,7 +551,7 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
                             YoYo.with(Techniques.TakingOff).duration(500).onEnd(new YoYo.AnimatorCallback() {
                                 @Override
                                 public void call(Animator animator) {
-                                    mTextGameOver.setText(getString(R.string.game_over));
+                                    mTextGameOver.setText(GetResourceUtil.getString(GameActivity.this, "game_over", lanType));
                                     gameOverAnimation();
                                 }
                             }).playOn(mMapImg[x][y]);
@@ -655,9 +659,9 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
 
     private void changeBtnText() {
         if (!ifGamePause) {
-            mBtnStart.setText(getString(R.string.pause));
+            mBtnStart.setText(GetResourceUtil.getString(this, "pause", lanType));
         } else {
-            mBtnStart.setText(getString(R.string.resume));
+            mBtnStart.setText(GetResourceUtil.getString(this, "resume", lanType));
         }
     }
 
@@ -671,7 +675,7 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
             @Override
             public void accept(String integer) throws Exception {
                 if (!ifGamePause && !ifGameOver) {
-                    mProgressTime.setProgress(remainTime++);
+                    mProgressTime.setProgress(++remainTime);
                     if (remainTime >= targetTime) {
                         ifGameOver = true;
                         failedGame(-1, -1, -1, -1, ConstantValue.FAIL_TIME_OUT);

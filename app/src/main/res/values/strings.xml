@@ -20,4 +20,33 @@
     <string name="sora_shiro_github">Sora-Shiro</string>
     <string name="tutorial_explain">You can set up\nturnouts and stations\nBEFORE click START :)</string>
     <string name="tutorial_explain_2">To know more,\n please return\nMain Page and\nCLICK \'?\' and\nread help message\ncarefully :)</string>
+    <string name="eng">Eng</string>
+    <string name="if_music">if_music</string>
+    <string name="long_touch_to_play">Long Touch To Play :)</string>
+    <string name="loadingdotdotdot">Loading…</string>
+
+    <string name="chis">中文</string>
+    <string name="app_name_chn">地铁规划</string>
+    <string name="square_chn">方块</string>
+    <string name="start_chn">开始</string>
+    <string name="pause_chn">暂停</string>
+    <string name="resume_chn">继续</string>
+    <string name="time_out_chn">超时</string>
+    <string name="game_over_chn">游戏结束</string>
+    <string name="finish_level_chn">成功通关</string>
+    <string name="ok_chn">好的</string>
+    <string name="confirm_chn">确定</string>
+    <string name="metro_n_planning_chn">地  铁\n规  划</string>
+    <string name="prepare_chn">准备</string>
+    <string name="no_chn">不</string>
+    <string name="exit_chn">退出</string>
+    <string name="v1_0_chn">v1.0</string>
+    <string name="program_music_chn"><![CDATA[程序 & 音乐]]></string>
+    <string name="sora_shiro_chn">Sora Shiro</string>
+    <string name="github_chn">Github</string>
+    <string name="sora_shiro_github_chn">Sora-Shiro</string>
+    <string name="tutorial_explain_chn">你可以在点击\n开始按钮前设置\n地铁站和分岔道 :)</string>
+    <string name="tutorial_explain_2_chn">请返回主界面\n并单击\'?\'\n来获得更多信息 :)</string>
+    <string name="long_touch_to_play_chn">想玩这关请长按 :)</string>
+    <string name="loadingdotdotdot_chn">读取中......</string>
 </resources>

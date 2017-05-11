@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sorashiro.metroplanning.util.AppSaveDataSPUtil;
@@ -22,10 +23,19 @@ public class HelpActivity extends AppCompatActivity {
 
     MediaPlayer mMediaPlayer;
 
+    @BindView(R2.id.layout_root)
+    LinearLayout mLayoutRoot;
+
+    private int lanType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
+
+        AppSaveDataSPUtil.init(this);
+
+        lanType = AppSaveDataSPUtil.getLanguage();
 
         initMusic();
 
@@ -36,6 +46,9 @@ public class HelpActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        mLayoutRoot.setBackgroundDrawable(GetResourceUtil.getDrawable(this, "help_explain", lanType));
+
         if (mMediaPlayer != null && !mMediaPlayer.isPlaying() && AppSaveDataSPUtil.getIfMusicOn()) {
             mMediaPlayer.start();
         }

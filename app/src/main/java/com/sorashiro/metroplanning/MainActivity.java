@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 
 import com.azoft.carousellayoutmanager.CarouselLayoutManager;
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
@@ -36,11 +37,15 @@ public class MainActivity extends AppCompatActivity implements ExitDialog.ExitEv
 
     @BindView(R2.id.level_list)
     RecyclerView mRcLevelList;
+    @BindView(R2.id.text_title)
+    TextView mTextTitle;
 
     private List<String> mListData;
     private LevelListAdapter mLevelListAdapter;
 
     private MediaPlayer mMediaPlayer;
+
+    private int lanType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,11 @@ public class MainActivity extends AppCompatActivity implements ExitDialog.ExitEv
     @Override
     protected void onResume() {
         super.onResume();
+
+        lanType = AppSaveDataSPUtil.getLanguage();
+
+        mTextTitle.setText(GetResourceUtil.getString(this, "metro_n_planning", lanType));
+
         int level = AppSaveDataSPUtil.getPassLevel() + 1;
         if (level <= CoreData.getLevels() && mListData.size() < level) {
             mListData.add(mListData.size(), level+"");
@@ -125,12 +135,16 @@ public class MainActivity extends AppCompatActivity implements ExitDialog.ExitEv
         mLevelListAdapter.setOnItemClickListener(new LevelListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                LogAndToastUtil.ToastOut(MainActivity.this, "Long Touch To Play :)");
+                String show = GetResourceUtil.getString(MainActivity.this, "long_touch_to_play", lanType);
+                LogAndToastUtil.ToastOut(MainActivity.this, show);
+
             }
 
             @Override
             public void onItemLongClick(View view, int position) {
-                LogAndToastUtil.ToastOut(MainActivity.this, "Loading...");
+                String show = GetResourceUtil.getString(MainActivity.this, "loadingdotdotdot", lanType);
+                LogAndToastUtil.ToastOut(MainActivity.this, show);
+
                 if(position == 0) {
                     Intent intent = new Intent(MainActivity.this, GameTutorialActivity.class);
                     intent.putExtra("level", position+1);
@@ -152,6 +166,8 @@ public class MainActivity extends AppCompatActivity implements ExitDialog.ExitEv
         AnimationUtil.twinkle(view);
         switch (view.getId()) {
             case R.id.btn_setting:
+                Intent settingIntent = new Intent(MainActivity.this, ConfigActivity.class);
+                startActivity(settingIntent);
                 break;
             case R.id.btn_help:
                 Intent helpIntent = new Intent(MainActivity.this, HelpActivity.class);
@@ -186,18 +202,5 @@ public class MainActivity extends AppCompatActivity implements ExitDialog.ExitEv
         //Do Nothing
     }
 
-    //更改BGM状态时要调用该函数
-    private void toggleMediaPlayer() {
-        if(!AppSaveDataSPUtil.getIfMusicOn()){
-            return;
-        }
-        if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
-            mMediaPlayer.pause();
-        } else {
-            if (mMediaPlayer != null && !mMediaPlayer.isPlaying()) {
-                mMediaPlayer.start();
-            }
-        }
-    }
 
 }

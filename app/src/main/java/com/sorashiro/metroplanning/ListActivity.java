@@ -5,7 +5,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sorashiro.metroplanning.util.AppSaveDataSPUtil;
@@ -24,13 +23,23 @@ public class ListActivity extends AppCompatActivity {
 
     @BindView(R2.id.text_version)
     TextView mTextVersion;
+    @BindView(R2.id.text_title)
+    TextView mTextTitle;
+    @BindView(R2.id.text_work)
+    TextView mTextWork;
 
     MediaPlayer mMediaPlayer;
+
+    private int lanType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitivity_list);
+
+        AppSaveDataSPUtil.init(this);
+
+        lanType = AppSaveDataSPUtil.getLanguage();
 
         initMusic();
 
@@ -41,6 +50,10 @@ public class ListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        mTextTitle.setText(GetResourceUtil.getString(this, "metro_n_planning", lanType));
+        mTextWork.setText(GetResourceUtil.getString(this, "program_music", lanType));
+
         if (mMediaPlayer != null && !mMediaPlayer.isPlaying() && AppSaveDataSPUtil.getIfMusicOn()) {
             mMediaPlayer.start();
         }

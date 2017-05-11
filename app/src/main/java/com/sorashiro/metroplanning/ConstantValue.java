@@ -30,4 +30,8 @@ public class ConstantValue {
 
     public static final int GAME_MUSIC = R.raw.swipe_game;
 
+    public static final int LAN_SUM = 2;
+    public static final int ENGLISH = 0;
+    public static final int CHINESE_SIM = 1;
+
 }

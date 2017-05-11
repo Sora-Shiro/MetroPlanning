@@ -76,12 +76,16 @@ public class GameTutorialActivity extends RxAppCompatActivity implements View.On
     private int targetPassenger;
     private int finishPassenger;
 
+    private int lanType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_tutorial);
 
         AppSaveDataSPUtil.init(this);
+
+        lanType = AppSaveDataSPUtil.getLanguage();
 
         initMusic();
 
@@ -112,7 +116,7 @@ public class GameTutorialActivity extends RxAppCompatActivity implements View.On
     protected void onStop() {
         super.onStop();
         ifGamePause = true;
-        mBtnStart.setText(getResources().getString(R.string.resume));
+        mBtnStart.setText(GetResourceUtil.getString(this, "resume", lanType));
         if (mMediaPlayer != null && mMediaPlayer.isPlaying() && !AppUtil.isAppOnForeground(this)) {
             mMediaPlayer.pause();
         }
@@ -160,26 +164,26 @@ public class GameTutorialActivity extends RxAppCompatActivity implements View.On
                     @Override
                     public void call(Animator animator) {
                         mTextGameOver.setVisibility(View.GONE);
-                        mTextTur.setText(getResources().getString(R.string.tutorial_explain));
+                        mTextTur.setText(GetResourceUtil.getString(GameTutorialActivity.this, "tutorial_explain", lanType));
                         YoYo.with(Techniques.RollIn).duration(800).onEnd(new YoYo.AnimatorCallback() {
                             @Override
                             public void call(Animator animator) {
-                                YoYo.with(Techniques.RollOut).delay(3000).duration(800).onEnd(new YoYo.AnimatorCallback() {
+                                YoYo.with(Techniques.RollOut).delay(4000).duration(800).onEnd(new YoYo.AnimatorCallback() {
                                     @Override
                                     public void call(Animator animator) {
                                         mTextTur.setVisibility(View.GONE);
-                                        mTextTur2.setText(getResources().getString(R.string.tutorial_explain_2));
+                                        mTextTur2.setText(GetResourceUtil.getString(GameTutorialActivity.this, "tutorial_explain_2", lanType));
                                         YoYo.with(Techniques.RollIn).duration(800).onEnd(new YoYo.AnimatorCallback() {
                                             @Override
                                             public void call(Animator animator) {
-                                                YoYo.with(Techniques.RollOut).delay(3000).duration(800).onEnd(new YoYo.AnimatorCallback() {
+                                                YoYo.with(Techniques.RollOut).delay(5000).duration(800).onEnd(new YoYo.AnimatorCallback() {
                                                     @Override
                                                     public void call(Animator animator) {
                                                         YoYo.with(Techniques.Flash).duration(500).onEnd(new YoYo.AnimatorCallback() {
                                                             @Override
                                                             public void call(Animator animator) {
-                                                                mTextGameOver.setVisibility(View.GONE);
-                                                                mBtnStart.setText(getResources().getString(R.string.start));
+                                                                mTextTur2.setVisibility(View.GONE);
+                                                                mBtnStart.setText(GetResourceUtil.getString(GameTutorialActivity.this, "start", lanType));
                                                                 mBtnStart.setClickable(true);
                                                             }
                                                         }).playOn(mBtnStart);
@@ -282,6 +286,7 @@ public class GameTutorialActivity extends RxAppCompatActivity implements View.On
     private void initView() {
         ButterKnife.bind(this);
 
+        mBtnStart.setText(GetResourceUtil.getString(this, "prepare", lanType));
         mBtnStart.setClickable(false);
 
         mProgressTime.setMax(targetTime);
@@ -541,7 +546,7 @@ public class GameTutorialActivity extends RxAppCompatActivity implements View.On
             public void run() {
                 ifGameOver = true;
                 mBtnStart.setClickable(false);
-                mTextGameOver.setText(getString(R.string.finish_level));
+                mTextGameOver.setText(GetResourceUtil.getString(GameTutorialActivity.this, "finish_level", lanType));
                 int passed = AppSaveDataSPUtil.getPassLevel();
                 if (mLevel > passed) {
                     AppSaveDataSPUtil.setPassLevel(mLevel);
@@ -558,12 +563,11 @@ public class GameTutorialActivity extends RxAppCompatActivity implements View.On
                 ifGameOver = true;
                 mBtnStart.setClickable(false);
                 if (failType == ConstantValue.FAIL_TIME_OUT) {
-
-                    mTextGameOver.setText(getString(R.string.time_out));
+                    mTextGameOver.setText(GetResourceUtil.getString(GameTutorialActivity.this, "time_out", lanType));
                     gameOverAnimation();
                 } else if (failType == ConstantValue.FAIL_OUT_BOUND) {
                     mMapImg[bx][by].setVisibility(View.GONE);
-                    mTextGameOver.setText(getString(R.string.game_over));
+                    mTextGameOver.setText(GetResourceUtil.getString(GameTutorialActivity.this, "game_over", lanType));
                     gameOverAnimation();
                 } else if (failType == ConstantValue.FAIL_HIT_SOMETHING) {
                     Drawable burst = getResources().getDrawable(R.drawable.burst);
@@ -577,7 +581,7 @@ public class GameTutorialActivity extends RxAppCompatActivity implements View.On
                             YoYo.with(Techniques.TakingOff).duration(500).onEnd(new YoYo.AnimatorCallback() {
                                 @Override
                                 public void call(Animator animator) {
-                                    mTextGameOver.setText(getString(R.string.game_over));
+                                    mTextGameOver.setText(GetResourceUtil.getString(GameTutorialActivity.this, "game_over", lanType));
                                     gameOverAnimation();
                                 }
                             }).playOn(mMapImg[x][y]);
@@ -605,7 +609,7 @@ public class GameTutorialActivity extends RxAppCompatActivity implements View.On
                                         finish();
                                     }
                                 });
-                                mBtnStart.setText(R.string.ok);
+                                mBtnStart.setText(GetResourceUtil.getString(GameTutorialActivity.this, "ok", lanType));
                                 mBtnStart.setClickable(true);
                             }
                         }).playOn(mBtnStart);
@@ -686,9 +690,9 @@ public class GameTutorialActivity extends RxAppCompatActivity implements View.On
 
     private void changeBtnText() {
         if (!ifGamePause) {
-            mBtnStart.setText(getString(R.string.pause));
+            mBtnStart.setText(GetResourceUtil.getString(this, "pause", lanType));
         } else {
-            mBtnStart.setText(getString(R.string.resume));
+            mBtnStart.setText(GetResourceUtil.getString(this, "resume", lanType));
         }
     }
 
@@ -702,7 +706,7 @@ public class GameTutorialActivity extends RxAppCompatActivity implements View.On
             @Override
             public void accept(String integer) throws Exception {
                 if (!ifGamePause && !ifGameOver) {
-                    mProgressTime.setProgress(remainTime++);
+                    mProgressTime.setProgress(++remainTime);
                     if (remainTime >= targetTime) {
                         ifGameOver = true;
                         failedGame(-1, -1, -1, -1, ConstantValue.FAIL_TIME_OUT);
