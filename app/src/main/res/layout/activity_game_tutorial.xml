@@ -118,7 +118,6 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="364dp"/>
 
-
     <android.support.constraint.Guideline
         android:id="@+id/guideline_h_75"
         android:layout_width="0dp"
@@ -127,6 +126,55 @@
         app:layout_constraintGuide_percent="0.75"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="420dp"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_h_85"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="420dp"/>
+
+    <LinearLayout
+        android:id="@+id/layout_progress"
+        android:layout_width="328dp"
+        android:layout_height="84dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_h_15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar
+            android:id="@+id/progress_time"
+            style="@style/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:rcIconSrc="@drawable/timer"
+            app:rcMax="100"
+            app:rcProgress="100"/>
+
+        <com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar
+            android:id="@+id/progress_passenger"
+            style="@style/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:rcIconSrc="@drawable/transfer_person"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/blue_primary_light"
+        app:layout_constraintBottom_toTopOf="@id/guideline_h_80"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_progress"
+        />
 
     <com.sorashiro.metroplanning.view.BlockView
         android:id="@+id/map_0_0_0"
@@ -543,6 +591,15 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="476dp"/>
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_h_95"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.95"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="476dp"/>
+
     <Button
         android:id="@+id/btn_start"
         android:layout_width="0dp"
@@ -551,39 +608,10 @@
         android:background="@color/btn_start"
         android:text="@string/prepare"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_h_90"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_h_95"
         app:layout_constraintLeft_toLeftOf="@+id/guideline_v_33"
         app:layout_constraintRight_toLeftOf="@+id/guideline_v_66"
-        app:layout_constraintTop_toTopOf="@+id/guideline_h_80"/>
-
-    <LinearLayout
-        android:layout_width="328dp"
-        android:layout_height="84dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@id/guideline_h_15"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
-
-        <com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar
-            android:id="@+id/progress_time"
-            style="@style/progressBar"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:rcIconSrc="@drawable/timer"
-            app:rcMax="100"
-            app:rcProgress="100"/>
-
-        <com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar
-            android:id="@+id/progress_passenger"
-            style="@style/progressBar"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:rcIconSrc="@drawable/transfer_person"/>
-
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="@+id/guideline_h_85"/>
 
     <TextView
         android:id="@+id/text_game_over"
@@ -619,6 +647,5 @@
         android:textSize="30sp"
         android:textStyle="bold"
         android:typeface="serif"/>
-
 
 </android.support.constraint.ConstraintLayout>

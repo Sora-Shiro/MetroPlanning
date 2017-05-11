@@ -386,6 +386,11 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
     }
 
     private void updateMetroPassenger(final int x, final int y) {
+        final Metro metro = (Metro) mMapCurrent[1][x][y];
+
+        int metroColor = metro.getColor();
+        int colorUniversal = getResources().getColor(R.color.block_universal);
+
         ArrayList<BlockBase> list = new ArrayList<>();
         BlockBase up = getBlock(x - 1, y);
         BlockBase down = getBlock(x + 1, y);
@@ -393,16 +398,33 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
         BlockBase right = getBlock(x, y + 1);
         //你是不是地铁站啊？
         if (up != null && up instanceof Station) {
-            list.add(up);
+            //颜色跟我一不一样啊？
+            int stationColor = up.getColor();
+            if (metroColor == colorUniversal || stationColor == colorUniversal
+                    || metroColor == stationColor) {
+                list.add(up);
+            }
         }
         if (down != null && down instanceof Station) {
-            list.add(down);
+            int stationColor = down.getColor();
+            if (metroColor == colorUniversal || stationColor == colorUniversal
+                    || metroColor == stationColor) {
+                list.add(down);
+            }
         }
         if (left != null && left instanceof Station) {
-            list.add(left);
+            int stationColor = left.getColor();
+            if (metroColor == colorUniversal || stationColor == colorUniversal
+                    || metroColor == stationColor) {
+                list.add(left);
+            }
         }
         if (right != null && right instanceof Station) {
-            list.add(right);
+            int stationColor = right.getColor();
+            if (metroColor == colorUniversal || stationColor == colorUniversal
+                    || metroColor == stationColor) {
+                list.add(right);
+            }
         }
         int index = -1, max = -1;
         for (int i = 0; i < list.size(); i++) {
@@ -412,10 +434,11 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
                 index = i;
             }
         }
-        //没有地铁站！
+        //没有符合要求的地铁站！
         if (index == -1) {
             return;
         }
+
         //地铁站优先级一样！不运输了！
         for (int i = 0; i < list.size(); i++) {
             Station station = (Station) list.get(i);
@@ -425,22 +448,12 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
         }
 
         //回到了出发地！
-        final Metro metro = (Metro) mMapCurrent[1][x][y];
         int preStationX = metro.getPreStationX();
         int preStationY = metro.getPreStationY();
         final Station station = (Station) list.get(index);
         final int curStationX = station.getX();
         final int curStationY = station.getY();
         if (preStationX == curStationX && preStationY == curStationY) {
-            return;
-        }
-
-        //地铁和地铁站的颜色不是通用颜色且不一样！
-        int metroColor = metro.getColor();
-        int stationColor = station.getColor();
-        int colorUniversal = getResources().getColor(R.color.block_universal);
-        if (metroColor != colorUniversal && stationColor != colorUniversal
-                && metroColor != stationColor) {
             return;
         }
 

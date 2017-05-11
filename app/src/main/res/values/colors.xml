@@ -33,6 +33,7 @@
     <color name="block_orange_transparent">#dcffb74d</color>
     <color name="block_purple">#e6ab47bc</color>
     <color name="block_purple_transparent">#dcab47bc</color>
+    <color name="block_grey">#9e9e9e</color>
 
     <color name="btn_start">#bbdefb</color>
 
