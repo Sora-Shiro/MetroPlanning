@@ -44,6 +44,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * 游戏主界面，算法核心
+ * 最难的地方在于地铁运行时各种数据的处理
+ *
+ *
+ */
 public class GameActivity extends RxAppCompatActivity implements View.OnClickListener {
 
     @BindView(R2.id.progress_time)
@@ -475,6 +481,12 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
 
         //地铁有乘客
         if (metroPassenger != 0) {
+            //模拟处理上下车
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             finishPassenger += metroPassenger;
             //主线程操作
             mHandler.post(new Runnable() {
@@ -485,13 +497,13 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
                     //运送了要记住出发点
                     metro.setPreStationX(curStationX);
                     metro.setPreStationY(curStationY);
+                    //检查运输进度
+                    if (checkTransportProcess()) {
+                        finishGame();
+                        return;
+                    }
                 }
             });
-            //检查运输进度
-            if (checkTransportProcess()) {
-                finishGame();
-                return;
-            }
         }
 
         //地铁站没人！
@@ -502,6 +514,13 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
         //运送乘客
         int fullLoad = metro.getFullLoad();
         final int loadPassenger = fullLoad < stationPassenger ? fullLoad : stationPassenger;
+
+        //模拟处理上下车
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         //地铁站乘客数量处理
         stationPassenger -= loadPassenger;
@@ -646,7 +665,7 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
                 public void subscribe(FlowableEmitter<String> e) throws Exception {
                     if (!ifGamePause && metro.isDriving() && !ifGameOver) {
                         try{
-                            Thread.sleep(metro.getSpeed() + metro.getTempDelay());
+                            Thread.sleep(metro.getSpeed());
                         }catch (Exception e1){
                             ;
                         }

@@ -64,13 +64,22 @@ Java_com_sorashiro_metroplanning_jni_CoreData_getLevelData(
             result += "0 1 grey left 0 2 grey left 0 4 grey right 2 4 grey right 3 1 grey left 5 1 grey left 5 3 grey right 5 4 grey right";
             break;
         case 6:
-            result += "6 6 90 800,";
+            result += "6 6 85 800,";
             result += "3 ";
             result += "2 5 purple up 1000 50 3 0 orange right 1000 50 5 2 black left 1000 50,";
             result += "7 ";
             result += "1 1 black 100 1 4 purple 150 2 2 black 200 2 3 orange 150 4 1 purple 100 4 3 orange 100 4 4 black 100,";
             result += "8 ";
             result += "0 0 grey down 0 5 grey left 2 0 grey right 2 1 grey down 3 1 grey right 3 5 grey up 5 0 grey right 5 5 grey up";
+            break;
+        case 7:
+            result += "6 6 55 800,";
+            result += "4 ";
+            result += "1 1 purple right 1000 50 1 4 purple left 1000 50 5 2 orange up 1000 50 5 3 orange up 1000 50,";
+            result += "4 ";
+            result += "0 3 purple 300 2 1 orange 100 3 2 purple 300 3 4 orange 100,";
+            result += "8 ";
+            result += "1 0 grey right 1 3 grey left 2 2 grey right 2 5 grey down 4 0 grey up 4 2 grey left 4 3 grey right 4 5 grey left";
             break;
         default:
             break;
@@ -84,5 +93,5 @@ jint
 Java_com_sorashiro_metroplanning_jni_CoreData_getLevels(
         JNIEnv *env, jobject object) {
 
-    return 6;
+    return 7;
 }
