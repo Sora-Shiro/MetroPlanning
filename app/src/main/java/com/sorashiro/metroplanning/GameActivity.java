@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -116,11 +117,13 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
         if (mMediaPlayer != null && mMediaPlayer.isPlaying() && !AppUtil.isAppOnForeground(this)) {
             mMediaPlayer.pause();
         }
+        finish();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ifGamePause = true;
         mHandler.removeCallbacksAndMessages(null);
         for(Flowable flowable : mFlowables) {
             flowable.unsubscribeOn(AndroidSchedulers.mainThread());
@@ -614,6 +617,7 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
             return;
         }
         ifGameStart = true;
+        ifGamePause = false;
         changeBtnText();
 
         //倒计时启动
@@ -621,7 +625,11 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
             @Override
             public void subscribe(FlowableEmitter<String> e) throws Exception {
                 if (!ifGamePause) {
-                    Thread.sleep(1000);
+                    try{
+                        Thread.sleep(1000);
+                    }catch (Exception e1){
+                        ;
+                    }
                     e.onNext("");
                 }
                 e.onComplete();
@@ -637,7 +645,11 @@ public class GameActivity extends RxAppCompatActivity implements View.OnClickLis
                 @Override
                 public void subscribe(FlowableEmitter<String> e) throws Exception {
                     if (!ifGamePause && metro.isDriving() && !ifGameOver) {
-                        Thread.sleep(metro.getSpeed() + metro.getTempDelay());
+                        try{
+                            Thread.sleep(metro.getSpeed() + metro.getTempDelay());
+                        }catch (Exception e1){
+                            ;
+                        }
                         if (!ifGamePause && metro.isDriving() && !ifGameOver) {
                             metro.setTempDelay(0);
                             metro.updatePosition();

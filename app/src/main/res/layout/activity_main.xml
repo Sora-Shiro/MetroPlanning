@@ -46,7 +46,7 @@
         android:layout_alignParentBottom="true"
         android:layout_width="@dimen/main_activity_corner_btn"
         android:layout_height="@dimen/main_activity_corner_btn"
-        android:background="@drawable/exit"
+        android:background="@drawable/exit_dark"
         />
 
     <TextView

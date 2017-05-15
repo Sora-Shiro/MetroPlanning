@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements ExitDialog.ExitEv
         mTextTitle.setText(GetResourceUtil.getString(this, "metro_n_planning", lanType));
 
         int level = AppSaveDataSPUtil.getPassLevel() + 1;
+//        int level = 5;
         if (level <= CoreData.getLevels() && mListData.size() < level) {
             mListData.add(mListData.size(), level+"");
             mLevelListAdapter.notifyItemInserted(mListData.size());

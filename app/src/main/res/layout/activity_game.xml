@@ -136,6 +136,34 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="420dp"/>
 
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_h_80"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.80"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="420dp"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_h_90"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.90"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="476dp"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_h_95"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.95"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="476dp"/>
+
     <LinearLayout
         android:id="@+id/layout_progress"
         android:layout_width="328dp"
@@ -572,34 +600,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline_h_65"/>
 
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline_h_80"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.80"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="420dp"/>
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline_h_90"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.90"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="476dp"/>
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline_h_95"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.95"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="476dp"/>
-
     <Button
         android:id="@+id/btn_start"
         android:layout_width="0dp"
@@ -624,5 +624,5 @@
         android:textStyle="bold"
         android:typeface="serif"
         />
-    
+
 </android.support.constraint.ConstraintLayout>

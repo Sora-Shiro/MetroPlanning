@@ -12,7 +12,7 @@
         android:layout_height="60dp"
         android:layout_margin="18dp"
         android:contentDescription="@string/no"
-        android:src="@drawable/no"
+        android:src="@drawable/bg_no"
         />
 
     <TextView
@@ -26,6 +26,6 @@
         android:layout_height="60dp"
         android:layout_margin="18dp"
         android:contentDescription="@string/exit"
-        android:src="@drawable/exit"/>
+        android:src="@drawable/bg_exit"/>
 
 </LinearLayout>

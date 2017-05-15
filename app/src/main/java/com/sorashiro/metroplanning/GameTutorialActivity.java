@@ -1,6 +1,7 @@
 package com.sorashiro.metroplanning;
 
 import android.animation.Animator;
+import android.bluetooth.BluetoothAdapter;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -120,15 +121,14 @@ public class GameTutorialActivity extends RxAppCompatActivity implements View.On
         if (mMediaPlayer != null && mMediaPlayer.isPlaying() && !AppUtil.isAppOnForeground(this)) {
             mMediaPlayer.pause();
         }
+        finish();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ifGamePause = true;
         mHandler.removeCallbacksAndMessages(null);
-        for (Flowable flowable : mFlowables) {
-            flowable.unsubscribeOn(AndroidSchedulers.mainThread());
-        }
     }
 
     //防止后台进入刷新，对部分机型无效
@@ -639,7 +639,11 @@ public class GameTutorialActivity extends RxAppCompatActivity implements View.On
             @Override
             public void subscribe(FlowableEmitter<String> e) throws Exception {
                 if (!ifGamePause) {
-                    Thread.sleep(1000);
+                    try{
+                        Thread.sleep(1000);
+                    }catch (Exception e1){
+                        ;
+                    }
                     e.onNext("");
                 }
                 e.onComplete();
@@ -655,7 +659,11 @@ public class GameTutorialActivity extends RxAppCompatActivity implements View.On
                 @Override
                 public void subscribe(FlowableEmitter<String> e) throws Exception {
                     if (!ifGamePause && metro.isDriving() && !ifGameOver) {
-                        Thread.sleep(metro.getSpeed() + metro.getTempDelay());
+                        try{
+                            Thread.sleep(metro.getSpeed() + metro.getTempDelay());
+                        }catch (Exception e1){
+                            ;
+                        }
                         if (!ifGamePause && metro.isDriving() && !ifGameOver) {
                             metro.setTempDelay(0);
                             metro.updatePosition();
