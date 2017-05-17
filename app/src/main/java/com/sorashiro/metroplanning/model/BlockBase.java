@@ -9,7 +9,6 @@ public abstract class BlockBase {
     private int type;
     private int color;
     private int layer;
-    private String colorType;
 
     public BlockBase(int type, int color, int layer){
         this.type = type;
