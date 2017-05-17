@@ -1,9 +1,5 @@
 package com.sorashiro.metroplanning.jni;
 
-/**
- * Created by GameKing on 2017/5/4.
- */
-
 public class CoreData {
 
     static {

@@ -3,10 +3,6 @@ package com.sorashiro.metroplanning;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
-/**
- * Created by GameKing on 2017/5/10.
- */
-
 public class GetResourceUtil {
 
     public static String getString(Context context, String name, int lanType) {

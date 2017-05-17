@@ -1,12 +1,6 @@
 package com.sorashiro.metroplanning.model;
 
-import android.graphics.drawable.Drawable;
-
 import com.sorashiro.metroplanning.ConstantValue;
-
-/**
- * Created by GameKing on 2017/5/1.
- */
 
 public class Turnout extends BlockBase {
 

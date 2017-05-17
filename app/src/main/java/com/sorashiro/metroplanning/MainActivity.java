@@ -29,10 +29,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by GameKing on 2017/5/5.
- */
-
 public class MainActivity extends AppCompatActivity implements ExitDialog.ExitEvent {
 
     @BindView(R2.id.level_list)

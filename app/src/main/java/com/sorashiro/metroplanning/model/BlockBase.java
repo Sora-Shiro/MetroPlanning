@@ -1,9 +1,5 @@
 package com.sorashiro.metroplanning.model;
 
-/**
- * Created by GameKing on 2017/5/1.
- */
-
 public abstract class BlockBase {
 
     private int type;

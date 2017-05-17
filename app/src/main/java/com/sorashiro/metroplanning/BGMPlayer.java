@@ -1,12 +1,7 @@
 package com.sorashiro.metroplanning;
 
-import android.app.Application;
 import android.content.Context;
 import android.media.MediaPlayer;
-
-/**
- * Created by GameKing on 2017/5/6.
- */
 
 public class BGMPlayer {
 

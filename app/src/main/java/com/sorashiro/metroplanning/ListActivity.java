@@ -15,10 +15,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by GameKing on 2017/5/6.
- */
-
 public class ListActivity extends AppCompatActivity {
 
     @BindView(R2.id.text_version)

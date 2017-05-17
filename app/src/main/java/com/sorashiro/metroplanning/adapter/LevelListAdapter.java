@@ -14,10 +14,6 @@ import com.sorashiro.metroplanning.util.LogAndToastUtil;
 
 import java.util.List;
 
-/**
- * Created by GameKing on 2017/5/5.
- */
-
 public class LevelListAdapter extends RecyclerView.Adapter<LevelViewHolder> {
 
     private Context             context;

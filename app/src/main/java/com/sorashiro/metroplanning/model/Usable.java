@@ -2,10 +2,6 @@ package com.sorashiro.metroplanning.model;
 
 import com.sorashiro.metroplanning.ConstantValue;
 
-/**
- * Created by GameKing on 2017/5/1.
- */
-
 public class Usable extends BlockBase {
 
     private int x;

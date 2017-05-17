@@ -19,10 +19,6 @@ import com.sorashiro.metroplanning.util.DisplayUtil;
 
 import java.util.HashMap;
 
-/**
- * Created by GameKing on 2017/5/4.
- */
-
 public class BlockView extends View {
 
     private int width;

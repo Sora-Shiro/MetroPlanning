@@ -1,9 +1,5 @@
 package com.sorashiro.metroplanning;
 
-/**
- * Created by GameKing on 2017/4/30.
- */
-
 public class ConstantValue {
 
     public static final int MAP_SIZE = 6;
