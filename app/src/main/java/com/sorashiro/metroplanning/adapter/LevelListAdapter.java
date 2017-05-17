@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.sorashiro.metroplanning.R;
 import com.sorashiro.metroplanning.jni.CoreData;
-import com.sorashiro.metroplanning.util.LogAndToastUtil;
 
 import java.util.List;
 

@@ -17,8 +17,6 @@ import com.sorashiro.metroplanning.model.Station;
 import com.sorashiro.metroplanning.model.Turnout;
 import com.sorashiro.metroplanning.util.DisplayUtil;
 
-import java.util.HashMap;
-
 public class BlockView extends View {
 
     private int width;

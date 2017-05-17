@@ -1,7 +1,6 @@
 package com.sorashiro.metroplanning;
 
 import android.animation.Animator;
-import android.bluetooth.BluetoothAdapter;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
