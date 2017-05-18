@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import com.sorashiro.metroplanning.ConstantValue;
 
 import java.lang.ref.WeakReference;
+import java.util.Locale;
 
 /**
  * @author Sora
@@ -72,8 +73,22 @@ public class AppSaveDataSPUtil {
         sEditor.commit();
     }
 
-    public static int getLanguage(){
-        return sSharedPreferences.getInt(LANGUAGE, ConstantValue.ENGLISH);
+    public static int getLanguage() {
+        return sSharedPreferences.getInt(LANGUAGE, defaultLanguage(sContext.get()));
+    }
+
+    private static int defaultLanguage(Context context) {
+        if(isZh(context)) {
+            return ConstantValue.CHINESE_SIM;
+        } else {
+            return ConstantValue.ENGLISH;
+        }
+    }
+
+    private static boolean isZh(Context context) {
+        Locale locale = context.getResources().getConfiguration().locale;
+        String language = locale.getLanguage();
+        return language.endsWith("zh");
     }
 
 }
