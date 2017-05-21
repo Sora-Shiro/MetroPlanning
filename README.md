@@ -11,12 +11,15 @@
 现实生活中，人们都离不开交通工具，而交通网络的构建需要 **严谨的设计** 和 **高度的灵活** ，从这个思路出发，我们设计了这一款名为 **《地铁规划 Metro Planning》** 游戏，模拟地铁运输乘客，让用户在规划地铁路线时能体会到游戏的真实感和逻辑的挑战。
 
 * ***游戏核心算法设计***
-  * 模式
+
+ * 模式
  确定使用 MVC 模式。
-  * 显示
+ 
+ * 显示
  地图是均匀分块的，那么首先就要 **有一个基类来存储这些分块的信息** ， BlockBase 类因此创建，它有基本的坐标、层数、类型属性，这些是其他 Model 的基础。
-model 包下的其他类都继承 BlockBase ，他们有共同的属性也有不同的属性，这些 **与 view 包下的 BlockView 相结合** ，将元素显示到地图上。
-  * 异步数据处理
+ model 包下的其他类都继承 BlockBase ，他们有共同的属性也有不同的属性，这些 **与 view 包下的 BlockView 相结合** ，将元素显示到地图上。
+ 
+ * 异步数据处理
  在 GameActivity 中，RxJava 除了用来处理比较简单的进度条显示外，还要 **快速计算** 游戏进行时相关的数据， updateMetroPosition 这个方法通过内部执行 moveMetroToPosition(beforeX, beforeY, afterX, afterY)，updateMetroOrientation(afterX, afterY)，updateMetroPassenger(afterX, afterY) 这三个方法来处理核心的算法，具体见代码。
 
 * ***游戏界面的设计***
