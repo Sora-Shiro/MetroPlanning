@@ -2,6 +2,8 @@
 
 # 《地铁规划 Metro Planning》 技术文档
 
+[点我下载APK](https://raw.githubusercontent.com/Sora-Shiro/Calculator/master/Extra/Calculator.apk)
+
 ## 程序说明
 
 * **开发环境版本** ： Android Studio 2.2 | Sublime Text 3 | Adobe PhotoShop CC 2014
