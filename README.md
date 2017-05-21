@@ -2,7 +2,7 @@
 
 # 《地铁规划 Metro Planning》 技术文档
 
-[点我下载APK](https://raw.githubusercontent.com/Sora-Shiro/Calculator/master/Extra/Calculator.apk)
+[点我下载APK](https://raw.githubusercontent.com/Sora-Shiro/MetroPlanning/blob/master/extra/Metro%20Planning%20v1.0.apk)
 
 ## 程序说明
 
